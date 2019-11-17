@@ -1,0 +1,1 @@
+Originally created by Ryzerth for the SignalsEverywhere discord server (https://signalseverywhere.com/discord)
