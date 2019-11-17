@@ -2,11 +2,16 @@ const net = require('net');
 const readline = require('readline');
 const aprs_parser = require("aprs-parser");
 const parser = new aprs_parser.APRSParser();
+const logger = require('../../utils/logger');
 let client = new net.Socket();
 
 let handler = null;
 
 module.exports.connect = (host, port, callsign, pass, msgHandler) => {
+    doConnect(host, port, callsign, pass, msgHandler)
+}
+
+function doConnect(host, port, callsign, pass, msgHandler) {
     client = new net.Socket();
     handler = msgHandler;
     client.connect(port, host, () => {
@@ -25,6 +30,10 @@ module.exports.connect = (host, port, callsign, pass, msgHandler) => {
                 handler(packet);
             }
         })
+    });
+    client.once('close', () => {
+        logger.logWarn('Disconnected from the APRS Network! Reconnecting...');
+        doConnect(host, port, callsign, pass, msgHandler);
     });
 }
 
