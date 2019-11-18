@@ -1,0 +1,28 @@
+{
+  "name": "aprs-parser",
+  "version": "1.0.3",
+  "description": "JavaScript library for parsing APRS packets",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha tests --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adriann0/npm-aprs-parser.git"
+  },
+  "keywords": [
+    "aprs",
+    "ham",
+    "radio"
+  ],
+  "author": "adriann0",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/adriann0/npm-aprs-parser/issues"
+  },
+  "homepage": "https://github.com/adriann0/npm-aprs-parser#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
