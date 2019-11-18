@@ -34,12 +34,12 @@ module.exports._init_ = (bot) => {
         logger.logInfo(`APRS Message received from ${from}, sending back an ACK!`);
 
         // Note: temporary until propper ACK
-        if (!messages[from]) {
-            messages[from] = {};
-        }
-        if (messages[from][packet.data.id]) {
-            return;
-        }
+        // if (!messages[from]) {
+        //     messages[from] = {};
+        // }
+        // if (messages[from][packet.data.id]) {
+        //     return;
+        // }
         messages[from][packet.data.id] = true;
 
         let cnf = await config.getServer(lcnf.serverId, 'oxyde')
@@ -85,7 +85,7 @@ module.exports.sendaprs = {
             return;
         }
         let body = text.substring(args[0].length + args[1].length + 2,text.length);
-        aprs.send(args[0], args[1], body);
+        aprs.send(args[0].toUpperCase(), args[1].toUpperCase(), body);
         msg.channel.createMessage(':white_check_mark: `Message sent!`');
     }
 }
