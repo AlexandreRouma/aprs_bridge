@@ -40,7 +40,7 @@ module.exports._init_ = (bot) => {
         // if (messages[from][packet.data.id]) {
         //     return;
         // }
-        messages[from][packet.data.id] = true;
+        // messages[from][packet.data.id] = true;
 
         let cnf = await config.getServer(lcnf.serverId, 'oxyde')
         let embed = new embedBuilder.Embed();
