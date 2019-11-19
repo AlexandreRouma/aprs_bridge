@@ -15,6 +15,7 @@ const APRS_BRIDGE_LOCAL_DEFAULT = {
     serverId: 'INSERT_HERE',
     aprsSendRoleId: 'INSERT_HERE',
     sendPositionBeacon: false,
+    positionBeaconRefresh: 3600,
     positionBeacon: {
         latitude: {
             deg: 0,
@@ -64,6 +65,9 @@ module.exports._init_ = (bot) => {
             aprs.updatePosition(lcnf.callsign, lcnf.positionBeacon.latitude.deg, lcnf.positionBeacon.latitude.min, lcnf.positionBeacon.latitude.sec, lcnf.positionBeacon.latitude.dir,
                 lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
                 lcnf.positionBeacon.message);
+            setInterval(() => {
+
+            }, lcnf.positionBeaconRefresh * 1000);
         }
     });
     return true;
