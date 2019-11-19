@@ -13,7 +13,23 @@ const APRS_BRIDGE_LOCAL_DEFAULT = {
     passcode: 'INSERT_HERE',
     channelId: 'INSERT_HERE',
     serverId: 'INSERT_HERE',
-    aprsSendRoleId: 'INSERT_HERE'
+    aprsSendRoleId: 'INSERT_HERE',
+    sendPositionBeacon: false,
+    positionBeacon: {
+        latitude: {
+            deg: 0,
+            min: 0,
+            sec: 0,
+            dir: 'N'
+        },
+        longitude: {
+            deg: 0,
+            min: 0,
+            sec: 0,
+            dir: 'W'
+        },
+        message: 'APRS->Discord Bridge!'
+    } 
 }
 
 let messages = {};
@@ -30,18 +46,10 @@ module.exports._init_ = (bot) => {
     aprs.connect(lcnf.server, lcnf.port, lcnf.callsign, lcnf.passcode, async (packet) => {
         // ACK the message
         let from = packet.from.call + (packet.from.ssid ? `-${packet.from.ssid}` : '');
-        aprs.send(lcnf.callsign, from, `ack${packet.data.id}`);
+        if (packet.data.id != undefined) {
+            aprs.send(lcnf.callsign, from, `ack${packet.data.id}`);
+        }
         logger.logInfo(`APRS Message received from ${from}, sending back an ACK!`);
-
-        // Note: temporary until propper ACK
-        // if (!messages[from]) {
-        //     messages[from] = {};
-        // }
-        // if (messages[from][packet.data.id]) {
-        //     return;
-        // }
-        // messages[from][packet.data.id] = true;
-
         let cnf = await config.getServer(lcnf.serverId, 'oxyde')
         let embed = new embedBuilder.Embed();
         embed.setColor(cnf.color);
@@ -51,6 +59,12 @@ module.exports._init_ = (bot) => {
         bot.createMessage(lcnf.channelId, {
             embed: embed.get()
         });
+    }, () => {
+        if (lcnf.sendPositionBeacon) {
+            aprs.updatePosition(lcnf.callsign, lcnf.positionBeacon.latitude.deg, lcnf.positionBeacon.latitude.min, lcnf.positionBeacon.latitude.sec, lcnf.positionBeacon.latitude.dir,
+                lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
+                lcnf.positionBeacon.message);
+        }
     });
     return true;
 }
@@ -84,8 +98,15 @@ module.exports.sendaprs = {
             msg.channel.createMessage(':no_entry: `Sorry, you do not have the permission to send APRS messages!`');
             return;
         }
-        let body = text.substring(args[0].length + args[1].length + 2,text.length);
-        aprs.send(args[0].toUpperCase(), args[1].toUpperCase(), body);
-        msg.channel.createMessage(':white_check_mark: `Message sent!`');
+        try {
+            let body = text.substring(args[0].length + args[1].length + 2,text.length);
+            aprs.send(args[0].toUpperCase(), args[1].toUpperCase(), body);
+            msg.channel.createMessage(':white_check_mark: `Message sent!`');
+        }
+        catch (e) {
+            msg.channel.createMessage(':no_entry: `There was a problem with the connection to the APRS network, please try again later.`');
+            logger.logWarn(`APRS Error: ${e}`);
+        }
+        
     }
 }
