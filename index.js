@@ -117,6 +117,7 @@ module.exports.setbeaconmsg = {
     adminOnly: true,
     minArgs: 1,
     base: async (Eris, bot, serverId, msg, text, args) => {
+        let lcnf = config.getLocal('aprs_bridge');
         if (!lcnf.sendPositionBeacon) {
             msg.channel.createMessage(':no_entry: `The APRS beacon is disabled in the config.`');
             return;
