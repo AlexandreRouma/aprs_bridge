@@ -128,7 +128,9 @@ module.exports.setbeaconmsg = {
         }
         aprs.updatePosition(lcnf.callsign, lcnf.positionBeacon.latitude.deg, lcnf.positionBeacon.latitude.min, lcnf.positionBeacon.latitude.sec, lcnf.positionBeacon.latitude.dir,
             lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
-            lcnf.positionBeacon.message);
+            message);
+        lcnf.positionBeacon.message = message;
+        config.setLocal('aprs_bridge', lcnf);
         msg.channel.createMessage(`:white_check_mark: \`Beacon message set to '${message}'\``);
     }
 }
