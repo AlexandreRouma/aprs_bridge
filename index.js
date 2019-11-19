@@ -66,7 +66,9 @@ module.exports._init_ = (bot) => {
                 lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
                 lcnf.positionBeacon.message);
             setInterval(() => {
-
+                aprs.updatePosition(lcnf.callsign, lcnf.positionBeacon.latitude.deg, lcnf.positionBeacon.latitude.min, lcnf.positionBeacon.latitude.sec, lcnf.positionBeacon.latitude.dir,
+                    lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
+                    lcnf.positionBeacon.message);
             }, lcnf.positionBeaconRefresh * 1000);
         }
     });
