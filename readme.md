@@ -4,6 +4,9 @@
 
 Originally created by Ryzerth for the SignalsEverywhere discord server (https://signalseverywhere.com/discord)
 
+WARNING: This module is made for a use on a single server bot.
+This may change in the future if there is enough request for it.
+
 # How to install
 
 - Make sure the Oxyde bot framework is installed (https://github.com/AlexandreRouma/Oxyde)

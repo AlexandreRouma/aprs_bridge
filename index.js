@@ -89,7 +89,7 @@ module.exports.fakeaprs = {
 }
 
 module.exports.sendaprs = {
-    description: 'Send a fake APRS message for testing purposes',
+    description: 'Send an APRS message',
     usage: 'sendaprs [from] [to] [message]',
     minArgs: 3,
     base: async (Eris, bot, serverId, msg, text, args) => {
@@ -108,5 +108,26 @@ module.exports.sendaprs = {
             logger.logWarn(`APRS Error: ${e}`);
         }
         
+    }
+}
+
+module.exports.setbeaconmsg = {
+    description: 'Change the bot\'s APRS beacon message if it is enabled. The max length is 47 characters',
+    usage: 'fakeaprs [message]',
+    adminOnly: true,
+    minArgs: 1,
+    base: async (Eris, bot, serverId, msg, text, args) => {
+        if (!lcnf.sendPositionBeacon) {
+            msg.channel.createMessage(':no_entry: `The APRS beacon is disabled in the config.`');
+            return;
+        }
+        let message = text;
+        if (message.length > 47) {
+            message = message.substr(0, 47);
+        }
+        aprs.updatePosition(lcnf.callsign, lcnf.positionBeacon.latitude.deg, lcnf.positionBeacon.latitude.min, lcnf.positionBeacon.latitude.sec, lcnf.positionBeacon.latitude.dir,
+            lcnf.positionBeacon.longitude.deg, lcnf.positionBeacon.longitude.min, lcnf.positionBeacon.longitude.sec, lcnf.positionBeacon.longitude.dir,
+            lcnf.positionBeacon.message);
+        msg.channel.createMessage(`:white_check_mark: \`Beacon message set to '${message}'\``);
     }
 }
