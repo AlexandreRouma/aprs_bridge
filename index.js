@@ -113,7 +113,7 @@ module.exports.sendaprs = {
 
 module.exports.setbeaconmsg = {
     description: 'Change the bot\'s APRS beacon message if it is enabled. The max length is 47 characters',
-    usage: 'fakeaprs [message]',
+    usage: 'setbeaconmsg [message]',
     adminOnly: true,
     minArgs: 1,
     base: async (Eris, bot, serverId, msg, text, args) => {
